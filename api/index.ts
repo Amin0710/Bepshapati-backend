@@ -2,6 +2,7 @@ import "dotenv/config";
 import express, { Express } from "express";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import cors from "cors";
+import { CorsOptions } from "cors";
 import { connectToDB, db } from "./db";
 import { ProductDB, User } from "./types";
 import { MongoServerError, ObjectId } from "mongodb";
@@ -9,13 +10,25 @@ import { MongoServerError, ObjectId } from "mongodb";
 // Setup Express app
 const app: Express = express();
 
-const corsOptions = {
-	origin:
-		process.env.NODE_ENV === "production"
-			? "https://bepshapati-template.vercel.app/"
-			: "http://localhost:5173",
+const allowedOrigins = [
+	"https://bepshapati-template.vercel.app",
+	"http://localhost:5173",
+];
+
+const corsOptions: CorsOptions = {
+	origin: (
+		origin: string | undefined,
+		callback: (err: Error | null, allow?: boolean) => void
+	) => {
+		if (!origin) return callback(null, true); // Allow non-browser requests or same-origin
+		if (allowedOrigins.includes(origin)) {
+			return callback(null, true);
+		}
+		return callback(new Error("Not allowed by CORS"));
+	},
 	credentials: true,
 };
+
 app.use(cors(corsOptions));
 app.use(express.json());
 
