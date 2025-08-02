@@ -11,7 +11,7 @@ import { MongoServerError, ObjectId } from "mongodb";
 const app: Express = express();
 
 const allowedOrigins = [
-	"https://bepshapati-template.vercel.app",
+	"https://bepshapati.vercel.app/",
 	"http://localhost:5173",
 ];
 
