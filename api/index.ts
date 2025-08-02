@@ -13,7 +13,7 @@ const corsOptions = {
 	origin:
 		process.env.NODE_ENV === "production"
 			? "https://bepshapati-template.vercel.app/"
-			: "http://localhost:5174",
+			: "http://localhost:5173",
 	credentials: true,
 };
 app.use(cors(corsOptions));
